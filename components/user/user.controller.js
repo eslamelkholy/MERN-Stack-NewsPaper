@@ -2,6 +2,8 @@
 const auth = require('./auth')
 const models = require('../../models')
 const User = models.User
+const Joi = require('joi')
+const { signUp, signIn } = require('./schema')
 
 exports.allUsers = (req, res) => {
   User.findAll()
@@ -15,8 +17,13 @@ exports.allUsers = (req, res) => {
 }
 
 exports.register = async (req, res) => {
+  const validationResult = signUp.validate(req.body, { abortEarly: false})
+  if(validationResult.error)
+    res.status(400).send(validationResult.error.details[0])
+    
   const user = await User.create(req.body)
-  res.status(201).send(user)
+  const access_token = auth.generateAccessToken(user)
+  res.status(201).send({access_token, user})
 }
 
 exports.login = async (req, res) => {
