@@ -11,5 +11,13 @@ module.exports = {
       if (checkIfUserExists)
         return res.status(400).send({message: 'Sorry This Email Already Exists'})
       next();
+  },
+  signInValidation: async (req, res, next) => {
+    const { email, password } = req.body
+    const user = await auth.findUserByEmail(email)
+    if (!user || !auth.matchesPassword(password, user.password))
+      return res.status(400).send({message : 'Unauthorized User'})
+    req.user = user
+    next()
   }
 }

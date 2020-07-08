@@ -1,4 +1,3 @@
-'use strict'
 const auth = require('./service/auth')
 
 exports.allUsers = async (req, res) => {
@@ -13,11 +12,7 @@ exports.register = async (req, res) => {
 }
 
 exports.login = async (req, res) => {
-  const { email, password } = req.body
-  const user = await auth.findUserByEmail(email)
-  if (!user || !auth.matchesPassword(password, user.password))
-    return res.status(400).send({message : 'Unauthorized User'})
-    
+  const user = req.user
   const access_token = auth.generateAccessToken(user)
   return res.status(200).send({access_token, user})
 }
