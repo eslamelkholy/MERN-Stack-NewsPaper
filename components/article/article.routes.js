@@ -1,6 +1,6 @@
 const controller = require('./article.controller')
-const express = express()
-const router = express.router()
+const express = require('express')
+const router = express.Router()
 
 router.get('', controller.getAllArticles)
 
