@@ -1,9 +1,14 @@
-const UserService = require("../user/service/auth");
+const { User } = require("../../models");
 
-exports.addFavorites = async (req, res) => {
-  res.send("Hi");
+exports.addUserFavorites = async (req, res) => {
+  const user = await User.findByPk(req.user.id);
+  await user.addFavorites(req.body.articleId);
+  const userFavorites = await user.getFavorites({ attributes: ["id"] });
+  res.status(201).json({ message: "Article Added Successfully", userFavorites });
 };
 
-exports.removeFavorites = async (req, res) => {
-  res.send("Remove");
+exports.removeUserFavorites = async (req, res) => {
+  const user = await User.findByPk(req.user.id);
+  await user.removeFavorites(req.body.articleId);
+  res.status(201).json({ message: "Article Removed Successfully" });
 };
