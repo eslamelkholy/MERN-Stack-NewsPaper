@@ -19,6 +19,6 @@
     "pg-hstore": "^2.3.3",
     "sequelize": "^6.3.0",
     "serve-favicon": "^2.5.0",
-    "sqlite3": "^5.0.0"
+    "sqlite3": "^5.0.3"
   }
 }
